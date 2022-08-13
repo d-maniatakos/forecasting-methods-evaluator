@@ -12,7 +12,7 @@ class ForecastingModel:
     def forecast(self, data, horizon):
         pass
 
-    def one_step_ahead_evaluate(self, ts, train_ratio=0.7):
+    def one_step_ahead_evaluate(self, ts, train_ratio=0.7, suppress_iterations=False):
         train_len = int(len(ts.data) * train_ratio)
         test_len = len(ts.data) - train_len
 
@@ -21,6 +21,7 @@ class ForecastingModel:
         total_times = []
 
         for i in range(test_len):
+            print('Iteration ' + str(i+1) + '/' + str(test_len))
             train_ts = TimeSeries('', ts.data[:train_len + i], ts.seasonality)
             start_time = time.time()
             forecasts = self.forecast(train_ts)
