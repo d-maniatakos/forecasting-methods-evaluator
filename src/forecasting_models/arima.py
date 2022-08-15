@@ -40,9 +40,3 @@ class ARIMA(ForecastingModel):
             forecasts = pd.concat([forecasts, forecast])
 
         return forecasts
-
-    def one_step_ahead_evaluate(self, ts, train_ratio=0.7):
-        super().one_step_ahead_evaluate(ts, train_ratio)
-
-    def multi_step_ahead_evaluate(self, ts, train_ratio=0.7):
-        super().multi_step_ahead_evaluate(ts, train_ratio)
