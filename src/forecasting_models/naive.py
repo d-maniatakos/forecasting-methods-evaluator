@@ -9,7 +9,7 @@ class Naive(ForecastingModel):
     def forecast(self, ts, horizon=1):
         forecasts_list = [ts.data[-1]] * horizon
 
-        if ts.frequency == 'MS':
+        if ts.frequency == 'MS' or ts.frequency == 'M':
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(months=1)
 
         dates_list = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
