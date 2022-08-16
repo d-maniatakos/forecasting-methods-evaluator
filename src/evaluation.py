@@ -23,13 +23,17 @@ class Evaluation:
         for ts in self.time_series:
             for model in self.models:
                 try:
-                    scores = model.one_step_ahead_evaluate(ts, 0.8)
+                    print(ts.name)
+                    print(model.name)
+                    scores = model.one_step_ahead_evaluate(ts, 0.8, suppress_iterations=False)
                     self.one_step_ahead_evaluations.at[ts.name, model.name] = scores['mape']
                 except:
                     pass
 
         for ts in self.time_series:
+            print(ts.name)
             for model in self.models:
+                print(model.name)
                 try:
                     scores = model.multi_step_ahead_evaluate(ts, 0.8)
                     self.multi_step_ahead_evaluations.at[ts.name, model.name] = scores['mape']
@@ -38,5 +42,7 @@ class Evaluation:
 
         self.one_step_ahead_evaluations.loc['Mean'] = self.one_step_ahead_evaluations.mean()
         self.multi_step_ahead_evaluations.loc['Mean'] = self.multi_step_ahead_evaluations.mean()
+        print('One-Step-Ahead Evaluation (Mean Absolute Percentage Error)')
         print(self.one_step_ahead_evaluations)
+        print('Multi-Step-Ahead Evaluation (Mean Absolute Percentage Error)')
         print(self.multi_step_ahead_evaluations)

@@ -33,10 +33,8 @@ class ARIMA(ForecastingModel):
 
         known_observations = ts.data
         forecasts = pd.Series(dtype='float64')
-        for i in range(horizon):
-            model = StatsModelsARIMA(known_observations, order=order, seasonal_order=seasonal_order)
-            forecast = model.fit().forecast()
-            known_observations = pd.concat([known_observations, forecast])
-            forecasts = pd.concat([forecasts, forecast])
+
+        model = StatsModelsARIMA(known_observations, order=order, seasonal_order=seasonal_order)
+        forecasts = model.fit().forecast(steps=horizon)
 
         return forecasts

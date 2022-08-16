@@ -11,25 +11,22 @@ df2 = pd.read_csv('datasets/monthly-car-sales.csv')
 df2.index = pd.date_range(start='1960-01', end='1968-12', freq='MS')
 df2 = df2['Sales']
 
-df3 = pd.read_csv('datasets/shampoo_sales.csv')
-df3.index = pd.date_range(start='1990-01', end='1992-12', freq='MS')
-df3 = df3['Sales']
+df4 = pd.read_csv('datasets/monthly-beer-production-in-australia.csv', index_col='Month')
+df4.index = pd.date_range(start='1956-01', periods=len(df4), freq='MS')
+df4 = df4['Monthly beer production']
 
-# df4 = pd.read_csv('datasets/UBER.csv')
-# df4.index = df4['Date']
-# df4 = df4['Adj Close']
-# df4.index = pd.to_datetime(df4.index)
-# df4 = df4.resample(rule='M').sum()
-# df4.index = pd.date_range(start='2019-05', end='2022-03', freq='MS')
+df5 = pd.read_csv('datasets/perrin-freres-monthly-champagne.csv', index_col='Month')
+df5.index = pd.date_range(start='1964-01', periods=len(df5), freq='MS')
+df5 = df5['Value']
 
-df5 = pd.read_csv('datasets/monthly-beer-production-in-australia.csv', index_col = 'Month')
-df5.index = pd.date_range(start='1956-01', periods = len(df5), freq='MS')
-df5 = df5['Monthly beer production']
-
+df6 = pd.read_csv('datasets/electricity_consumption.csv', index_col='Bill_Date')
+df6.index = pd.date_range(start='2016-01', periods=len(df6), freq='MS')
+df6 = df6['Usage_charge']
 
 ts = TimeSeries('Air Passengers', df, 'MS', 12)
 ts2 = TimeSeries('Car Sales', df2, 'MS', 12)
-ts3 = TimeSeries('Shampoo Sales', df3, 'MS', 12)
-ts4 = TimeSeries('Monthly Beer Production', df5, 'MS', 12)
+ts3 = TimeSeries('Monthly Beer Production', df4[:100], 'MS', 12)
+ts4 = TimeSeries('Monthly Champagne', df5, 'MS', 12)
+ts5 = TimeSeries('Monthly Electricity Consumption', df6, 'MS', 12)
 
-Evaluation([ts,ts2, ts3, ts4]).evaluate()
+Evaluation([ts,ts2,ts3,ts4,ts5]).evaluate()
