@@ -4,6 +4,7 @@ from forecasting_models.arima import ARIMA
 from forecasting_models.holt_winters import HoltWinters
 from forecasting_models.naive import Naive
 from forecasting_models.lstm import LSTM
+from forecasting_models.es_rnn import ES_RNN
 
 
 class Evaluation:
@@ -13,6 +14,7 @@ class Evaluation:
         self.models.append(HoltWinters())
         self.models.append(ARIMA())
         self.models.append(LSTM())
+        self.models.append(ES_RNN())
         self.models.append(Naive())
         self.one_step_ahead_evaluations = pd.DataFrame(columns=[model.name for model in self.models],
                                                        index=[ts.name for ts in self.time_series])
@@ -46,3 +48,6 @@ class Evaluation:
         print(self.one_step_ahead_evaluations)
         print('Multi-Step-Ahead Evaluation (Mean Absolute Percentage Error)')
         print(self.multi_step_ahead_evaluations)
+
+        self.one_step_ahead_evaluations.to_csv('one_step_ahead_evaluations.csv')
+        self.multi_step_ahead_evaluations.to_csv('multi_step_ahead_evaluations.csv')

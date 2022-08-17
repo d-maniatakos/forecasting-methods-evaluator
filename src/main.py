@@ -29,4 +29,4 @@ ts3 = TimeSeries('Monthly Beer Production', df4[:100], 'MS', 12)
 ts4 = TimeSeries('Monthly Champagne', df5, 'MS', 12)
 ts5 = TimeSeries('Monthly Electricity Consumption', df6, 'MS', 12)
 
-Evaluation([ts,ts2,ts3,ts4,ts5]).evaluate()
+Evaluation([ts, ts2, ts3, ts4, ts5]).evaluate()
