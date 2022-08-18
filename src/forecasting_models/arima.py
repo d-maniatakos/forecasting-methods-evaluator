@@ -13,13 +13,14 @@ class ARIMA(ForecastingModel):
 
         if order is None or seasonal_order is None:
             if ts.seasonality is not None:
+                seasonality = ts.seasonality if ts.seasonality != 365 else 7
                 auto_arima_params = pm.auto_arima(ts.data,
                                                   error_action='ignore',
                                                   trace=False,
                                                   suppress_warnings=True,
                                                   maxiter=5,
                                                   seasonal=True,
-                                                  m=ts.seasonality)
+                                                  m=seasonality)
             else:
                 auto_arima_params = pm.auto_arima(ts.data,
                                                   error_action='ignore',

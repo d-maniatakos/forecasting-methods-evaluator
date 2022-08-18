@@ -20,7 +20,14 @@ class ES_RNN(ForecastingModel):
         x_df.columns = ['unique_id', 'ds', 'x']
         x_df['x'] = x_df['x'].astype('str')
 
-        model = ESRNN(max_epochs=200, learning_rate=1e-4,
+        if len(ts.data) < 200:
+            max_epochs = 200
+        elif len(ts.data) < 1000:
+            max_epochs = 100
+        else:
+            max_epochs = 20
+
+        model = ESRNN(max_epochs=max_epochs, learning_rate=1e-4,
                       per_series_lr_multip=0.8, lr_scheduler_step_size=10,
                       lr_decay=0.1, gradient_clipping_threshold=50,
                       rnn_weight_decay=0.0, level_variability_penalty=100,
@@ -35,12 +42,14 @@ class ES_RNN(ForecastingModel):
 
         if ts.frequency == 'MS' or ts.frequency == 'M':
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(months=1)
-            x_test_df['ds'] = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
+        elif ts.frequency == 'D':
+            start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(days=1)
 
+        x_test_df['ds'] = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
         y_hat_df = model.predict(x_test_df)
 
         y_hat_df = y_hat_df.set_index('ds')
         y_hat_df = y_hat_df['y_hat']
-        y_hat_df.rename(index = 'Date')
+        y_hat_df.rename(index='Date')
 
         return y_hat_df

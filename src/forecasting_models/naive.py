@@ -11,7 +11,8 @@ class Naive(ForecastingModel):
 
         if ts.frequency == 'MS' or ts.frequency == 'M':
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(months=1)
-
+        if ts.frequency == 'D':
+            start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(days=1)
         dates_list = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
 
         forecasts = pd.Series(index=dates_list, data=forecasts_list)
