@@ -13,13 +13,13 @@ class LSTM(ForecastingModel):
         df.columns = ['time', 'value']
 
         if len(ts.data) < 30:
-            params = LSTMParams(hidden_size=100, time_window=5, num_epochs=100)
+            params = LSTMParams(hidden_size=100, time_window=10, num_epochs=200)
         elif len(ts.data) < 150:
-            params = LSTMParams(hidden_size=100, time_window=30, num_epochs=30)
+            params = LSTMParams(hidden_size=100, time_window=33, num_epochs=100)
         elif len(ts.data) < 500:
-            params = LSTMParams(hidden_size=100, time_window=30, num_epochs=10)
+            params = LSTMParams(hidden_size=100, time_window=50, num_epochs=50)
         else:
-            params = LSTMParams(hidden_size=100, time_window=30, num_epochs=5)
+            params = LSTMParams(hidden_size=100, time_window=50, num_epochs=25)
         data = TimeSeriesData(df)
         model = LSTMModel(data=data, params=params)
         model.fit()

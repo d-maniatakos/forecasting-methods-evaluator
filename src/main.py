@@ -39,6 +39,10 @@ df10 = pd.read_csv('datasets/longley.csv')
 df10.index = pd.date_range(start='1947', periods=len(df10), freq='Y')
 df10 = df10['Employed']
 
+df11 = pd.read_csv('datasets/monthly_sailing_traffic.csv')
+df11.index = pd.date_range(start='2018-01-01', periods=len(df11), freq='M')
+df11 = df11['passengercount']
+
 ts1 = TimeSeries('Air Passengers', df, 'MS', 12)
 ts2 = TimeSeries('Car Sales', df2, 'MS', 12)
 ts3 = TimeSeries('Monthly Beer Production', df4[:100], 'MS', 12)
@@ -48,5 +52,6 @@ ts6 = TimeSeries('Daily Min Temperatures', df7, 'D', 365)
 ts7 = TimeSeries('Daily Total Female Births', df8, 'D', 7)
 ts8 = TimeSeries('Yearly Water Usage', df9, 'Y', None)
 ts9 = TimeSeries('Longley', df10, 'Y', None)
+ts10 = TimeSeries('Sailing Traffic', df11, 'M', 12)
 
-Evaluation([ts1, ts2, ts3, ts4, ts5, ts6, ts7, ts8, ts9]).evaluate()
+Evaluation([ts1, ts2, ts3, ts4, ts5, ts6, ts7, ts8, ts9, ts10]).evaluate()

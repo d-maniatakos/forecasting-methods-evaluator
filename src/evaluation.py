@@ -4,6 +4,7 @@ from forecasting_models.holt_winters import HoltWinters
 from forecasting_models.arima import ARIMA
 from forecasting_models.lstm import LSTM
 from forecasting_models.es_rnn import ES_RNN
+from forecasting_models.ensemble import Ensemble
 from forecasting_models.naive import Naive
 
 
@@ -30,13 +31,14 @@ class Evaluation:
                                                          index=[ts.name for ts in self.time_series])
 
     def initialize_models(self):
-        self.models.append(HoltWinters())
+        # self.models.append(HoltWinters())
         # self.models.append(ARIMA())
-        # self.models.append(LSTM())
-        self.models.append(ES_RNN())
+        self.models.append(LSTM())
+        # self.models.append(ES_RNN())
+        # self.models.append(Ensemble())
         self.models.append(Naive())
 
-    def evaluate(self, one_step_ahead_evaluation=False, multi_step_ahead_evaluation=True, export_to_csv=False):
+    def evaluate(self, one_step_ahead_evaluation=False, multi_step_ahead_evaluation=True, export_to_csv=True):
 
         if one_step_ahead_evaluation:
             for ts in self.time_series:
