@@ -20,19 +20,26 @@ class ES_RNN(ForecastingModel):
         x_df.columns = ['unique_id', 'ds', 'x']
         x_df['x'] = x_df['x'].astype('str')
 
-        if len(ts.data) < 200:
+        if len(ts.data) < 100:
+            max_epochs = 300
+        elif len(ts.data) < 200:
             max_epochs = 200
         elif len(ts.data) < 1000:
             max_epochs = 100
         else:
             max_epochs = 20
 
+        if len(ts.data<24-horizon):
+            input_size = 6
+        else:
+            input_size = 24
+
         model = ESRNN(max_epochs=max_epochs, learning_rate=1e-4,
                       per_series_lr_multip=0.8, lr_scheduler_step_size=10,
                       lr_decay=0.1, gradient_clipping_threshold=50,
                       rnn_weight_decay=0.0, level_variability_penalty=100,
                       ensemble=True, seasonality=[],
-                      input_size=24, output_size=horizon,
+                      input_size=input_size, output_size=horizon,
                       cell_type='LSTM', state_hsize=20,
                       dilations=[[1], [6]], add_nl_layer=False,
                       random_seed=1, device='cuda')
@@ -44,6 +51,8 @@ class ES_RNN(ForecastingModel):
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(months=1)
         elif ts.frequency == 'D':
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(days=1)
+        elif ts.frequency == 'Y':
+            start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(years=1)
 
         x_test_df['ds'] = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
         y_hat_df = model.predict(x_test_df)

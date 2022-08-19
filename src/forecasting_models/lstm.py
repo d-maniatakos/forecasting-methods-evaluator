@@ -11,7 +11,10 @@ class LSTM(ForecastingModel):
     def forecast(self, ts, horizon=1):
         df = ts.data.to_frame().reset_index()
         df.columns = ['time', 'value']
-        if len(ts.data) < 150:
+
+        if len(ts.data) < 30:
+            params = LSTMParams(hidden_size=100, time_window=5, num_epochs=100)
+        elif len(ts.data) < 150:
             params = LSTMParams(hidden_size=100, time_window=30, num_epochs=30)
         elif len(ts.data) < 500:
             params = LSTMParams(hidden_size=100, time_window=30, num_epochs=10)

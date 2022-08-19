@@ -27,13 +27,26 @@ df7 = pd.read_csv('datasets/daily-min-temperatures.csv', index_col='Date')
 df7.index = pd.date_range(start='1981-01-01', periods=len(df7), freq='D')
 df7 = df7['Temp']
 
-ts = TimeSeries('Air Passengers', df, 'MS', 12)
+df8 = pd.read_csv('datasets/daily-total-female-births.csv', index_col='Date')
+df8.index = pd.date_range(start='1959-01-01', periods=len(df8), freq='D')
+df8 = df8['Births']
+
+df9 = pd.read_csv('datasets/yearly-water-usage.csv')
+df9.index = pd.date_range(start='1885', periods=len(df9), freq='Y')
+df9 = df9['Water']
+
+df10 = pd.read_csv('datasets/longley.csv')
+df10.index = pd.date_range(start='1947', periods=len(df10), freq='Y')
+df10 = df10['Employed']
+
+ts1 = TimeSeries('Air Passengers', df, 'MS', 12)
 ts2 = TimeSeries('Car Sales', df2, 'MS', 12)
 ts3 = TimeSeries('Monthly Beer Production', df4[:100], 'MS', 12)
 ts4 = TimeSeries('Monthly Champagne', df5, 'MS', 12)
 ts5 = TimeSeries('Monthly Electricity Consumption', df6, 'MS', 12)
 ts6 = TimeSeries('Daily Min Temperatures', df7, 'D', 365)
+ts7 = TimeSeries('Daily Total Female Births', df8, 'D', 7)
+ts8 = TimeSeries('Yearly Water Usage', df9, 'Y', None)
+ts9 = TimeSeries('Longley', df10, 'Y', None)
 
-print('hello')
-
-Evaluation([ts6]).evaluate()
+Evaluation([ts1, ts2, ts3, ts4, ts5, ts6, ts7, ts8, ts9]).evaluate()

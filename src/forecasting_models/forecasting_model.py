@@ -56,6 +56,7 @@ class ForecastingModel:
         forecasted_values = self.forecast(train_ts, test_len).tolist()
         end_time = time.time()
 
+
         # plt.plot(true_values)
         # plt.plot(forecasted_values)
         # plt.show()
