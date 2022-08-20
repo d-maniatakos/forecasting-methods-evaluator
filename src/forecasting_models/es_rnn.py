@@ -1,5 +1,4 @@
 from .forecasting_model import ForecastingModel
-
 import pandas as pd
 from ESRNN import ESRNN
 
@@ -20,8 +19,9 @@ class ES_RNN(ForecastingModel):
         x_df.columns = ['unique_id', 'ds', 'x']
         x_df['x'] = x_df['x'].astype('str')
 
+        # TODO: Generalization
         if len(ts.data) < 100:
-            max_epochs = 300
+            max_epochs = 100
         elif len(ts.data) < 200:
             max_epochs = 200
         elif len(ts.data) < 1000:
@@ -29,7 +29,7 @@ class ES_RNN(ForecastingModel):
         else:
             max_epochs = 20
 
-        if len(ts.data<24-horizon):
+        if len(ts.data < 24 - horizon):
             input_size = 6
         else:
             input_size = 24

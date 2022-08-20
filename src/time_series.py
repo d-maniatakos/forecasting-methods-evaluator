@@ -1,4 +1,8 @@
 class TimeSeries:
+    """
+    Class holding a time series' data and useful information
+    """
+
     def __init__(self, name, data, frequency, seasonality):
         self.name = name
         self.data = data

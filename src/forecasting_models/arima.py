@@ -1,7 +1,7 @@
 import pandas as pd
+import pmdarima as pm
 from .forecasting_model import ForecastingModel
 from statsmodels.tsa.arima.model import ARIMA as StatsModelsARIMA
-import pmdarima as pm
 from time_series import TimeSeries
 
 
