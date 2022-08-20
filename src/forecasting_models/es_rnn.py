@@ -34,13 +34,13 @@ class ES_RNN(ForecastingModel):
         else:
             input_size = 24
 
-        model = ESRNN(max_epochs=max_epochs, learning_rate=1e-4,
+        model = ESRNN(max_epochs=max_epochs, learning_rate=1e-3,
                       per_series_lr_multip=0.8, lr_scheduler_step_size=10,
                       lr_decay=0.1, gradient_clipping_threshold=50,
                       rnn_weight_decay=0.0, level_variability_penalty=100,
                       ensemble=True, seasonality=[],
                       input_size=input_size, output_size=horizon,
-                      cell_type='LSTM', state_hsize=20,
+                      cell_type='LSTM', state_hsize=30,
                       dilations=[[1], [6]], add_nl_layer=False,
                       random_seed=1, device='cuda')
 
@@ -55,10 +55,10 @@ class ES_RNN(ForecastingModel):
             start = ts.data.index[-1] + pd.tseries.offsets.DateOffset(years=1)
 
         x_test_df['ds'] = pd.date_range(start=start, periods=horizon, freq=ts.frequency)
-        y_hat_df = model.predict(x_test_df)
+        forecasts = model.predict(x_test_df)
 
-        y_hat_df = y_hat_df.set_index('ds')
-        y_hat_df = y_hat_df['y_hat']
-        y_hat_df.rename(index='Date')
+        forecasts = forecasts.set_index('ds')
+        forecasts = forecasts['y_hat']
+        forecasts.rename(index='Date')
 
-        return y_hat_df
+        return forecasts

@@ -9,9 +9,9 @@ from forecasting_models.naive import Naive
 
 
 class Evaluation:
-    def __init__(self, time_series=None):
-        if time_series is not None:
-            self.time_series = time_series
+    def __init__(self, time_series_list=None):
+        if time_series_list is not None:
+            self.time_series = time_series_list
         else:
             self.time_series = []
         self.models = []
@@ -31,12 +31,13 @@ class Evaluation:
                                                          index=[ts.name for ts in self.time_series])
 
     def initialize_models(self):
-        # self.models.append(HoltWinters())
-        # self.models.append(ARIMA())
+        self.models.append(HoltWinters())
+        self.models.append(ARIMA())
         self.models.append(LSTM())
-        # self.models.append(ES_RNN())
-        # self.models.append(Ensemble())
+        self.models.append(ES_RNN())
+        self.models.append(Ensemble())
         self.models.append(Naive())
+        pd.set_option('display.max_columns', 10)
 
     def evaluate(self, one_step_ahead_evaluation=False, multi_step_ahead_evaluation=True, export_to_csv=True):
 
@@ -47,7 +48,7 @@ class Evaluation:
                     print('\tModel: ' + model.name)
                     try:
                         scores = model.one_step_ahead_evaluate(ts, 0.7, suppress_iterations_print=False)
-                        self.one_step_ahead_evaluations.at[ts.name, model.name] = scores['mape']
+                        self.one_step_ahead_evaluations.at[ts.name, model.name] = str(100*scores['mape']) + '%'
                     except:
                         pass
 
@@ -59,7 +60,7 @@ class Evaluation:
 
                     try:
                         scores = model.multi_step_ahead_evaluate(ts, 0.7)
-                        self.multi_step_ahead_evaluations.at[ts.name, model.name] = scores['mape']
+                        self.multi_step_ahead_evaluations.at[ts.name, model.name] = str(100*scores['mape']) + '%'
                     except:
                         pass
 

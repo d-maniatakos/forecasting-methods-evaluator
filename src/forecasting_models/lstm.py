@@ -26,11 +26,11 @@ class LSTM(ForecastingModel):
 
         model.predict(steps=horizon, freq=ts.frequency)
 
-        forecasts_df = model.fcst_df
-        forecasts_df.index = forecasts_df['time']
-        forecasts_df = forecasts_df[['time', 'fcst']]
-        forecasts_df.columns = ['time', 'value']
-        forecasts_df.set_index('time')
-        forecasts_df = forecasts_df['value']
+        forecasts = model.fcst_df
+        forecasts.index = forecasts['time']
+        forecasts = forecasts[['time', 'fcst']]
+        forecasts.columns = ['time', 'value']
+        forecasts.set_index('time')
+        forecasts = forecasts['value']
 
-        return forecasts_df
+        return forecasts

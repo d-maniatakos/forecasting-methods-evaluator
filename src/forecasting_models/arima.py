@@ -10,7 +10,6 @@ class ARIMA(ForecastingModel):
         super().__init__('ARIMA')
 
     def forecast(self, ts, horizon=1, order=None, seasonal_order=None):
-
         if order is None or seasonal_order is None:
             if ts.seasonality is not None:
                 seasonality = ts.seasonality if ts.seasonality != 365 else 7
@@ -32,10 +31,7 @@ class ARIMA(ForecastingModel):
             order = auto_arima_params.order
             seasonal_order = auto_arima_params.seasonal_order
 
-        known_observations = ts.data
-        forecasts = pd.Series(dtype='float64')
-
-        model = StatsModelsARIMA(known_observations, order=order, seasonal_order=seasonal_order)
+        model = StatsModelsARIMA(ts.data, order=order, seasonal_order=seasonal_order)
         forecasts = model.fit().forecast(steps=horizon)
 
         return forecasts
